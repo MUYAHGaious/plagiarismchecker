@@ -1,13 +1,17 @@
 import os
+from dotenv import load_dotenv
 from fastapi import HTTPException, status
 from fastapi.security import APIKeyHeader
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Define API key header name
 API_KEY_NAME = "X-API-Key"
 api_key_header = APIKeyHeader(name=API_KEY_NAME)
 
-# Get API key from environment variable with a fallback for development
-API_KEY = os.getenv("API_KEY", "your-secret-api-key-12345")
+# Get API key from environment variable
+API_KEY = os.getenv("API_KEY", "default-fallback-key")
 
 def validate_api_key(api_key: str):
     """Validate the API key."""

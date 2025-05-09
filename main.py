@@ -6,6 +6,8 @@ import shutil
 from typing import List, Dict, Any, Optional, Union
 from datetime import datetime
 from pathlib import Path
+from dotenv import load_dotenv
+
 
 import numpy as np
 from fastapi import FastAPI, File, UploadFile, HTTPException, BackgroundTasks, Depends, Query, status
@@ -52,7 +54,16 @@ app.add_middleware(
 API_KEY_NAME = "X-API-Key"
 api_key_header = APIKeyHeader(name=API_KEY_NAME)
 
-# Initialize models
+# Near the top of your file, after imports
+from database import Base, engine
+
+# Initialize database tables
+@app.on_event("startup")
+async def startup():
+    Base.metadata.create_all(bind=engine)
+    print("Database tables created")
+# Initialize models 
+
 models.Base.metadata.create_all(bind=engine)
 
 # Initialize the sentence transformer model with error handling
