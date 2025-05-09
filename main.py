@@ -1,5 +1,4 @@
 
-
 import os
 import uuid
 import shutil
@@ -330,7 +329,17 @@ def check_plagiarism_background(document_id: str, threshold: float, db: Session)
             print(f"Error updating document status: {str(inner_e)}")
 
 # API Endpoints
+@app.get("/")
+async def root():
+    """Root endpoint for the API."""
+    return {
+        "message": "Plagiarism Checker API",
+        "version": "1.0.0",
+        "docs_url": "/docs",
+        "status": "online"
+    }
 
+    
 @app.get("/")
 async def root():
     return {"message": "Journal Plagiarism Checker API"}
